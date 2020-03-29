@@ -21,6 +21,7 @@ if (!process.env.JWT_PRIVATE_KEY) {
 const app = express();
 
 const auth = require("./routes/auth");
+const posts = require("./routes/posts");
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -33,6 +34,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/auth", auth);
+app.use("/posts", posts);
 
 const port = process.env.PORT || 4040;
 
