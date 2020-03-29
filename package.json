@@ -1,0 +1,42 @@
+{
+  "name": "hitk-literary-club-api",
+  "version": "1.0.0",
+  "description": "The backend REST API for the official website of HITK's lit. club",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/subhasis020299/hitk-literary-club-api.git"
+  },
+  "keywords": [
+    "hitk",
+    "literary",
+    "club",
+    "API",
+    "REST",
+    "backend"
+  ],
+  "author": "subhasis das",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/subhasis020299/hitk-literary-club-api/issues"
+  },
+  "homepage": "https://github.com/subhasis020299/hitk-literary-club-api#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.6",
+    "winston": "^3.2.1",
+    "winston-mongodb": "^5.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
