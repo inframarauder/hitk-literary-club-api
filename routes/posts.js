@@ -1,5 +1,9 @@
 const express = require("express");
+const cloudinary = require("cloudinary");
+require("../configs/cloudinary");
 const logger = require("../configs/logger");
+const uploadMiddleware = require("../middlewares/uploadMiddleware");
+const isAuthenticated = require("../middlewares/isAuthenticated");
 const { Post, validatePost } = require("../models/post.model");
 
 const router = express.Router();
@@ -27,6 +31,31 @@ router.get("/:id", async (req, res) => {
       return res.status(404).json({ error: "Post not found!" });
     } else {
       return res.status(200).json(post);
+    }
+  } catch (err) {
+    logger.error(err.message, { meta: err });
+    return res.status(500).json({ error: "Internal Server Error!" });
+  }
+});
+
+router.post("/", isAuthenticated, uploadMiddleware, async (req, res) => {
+  try {
+    let { error } = validatePost(req.body);
+    if (error) {
+      return res.status(400).json({ error: error.details[0].message });
+    } else {
+      let cloudinaryUploads = {};
+      for (var file of req.files) {
+        let upload = await cloudinary.v2.uploader.upload(file.path, {
+          public_id: `literary_club/${file.originalname}${Date.now()}`
+        });
+        cloudinaryUploads[`${file.fieldname}`] = upload.secure_url;
+      }
+      let newPost = await new Post({
+        ...req.body,
+        ...cloudinaryUploads
+      }).save();
+      return res.status(200).json(newPost);
     }
   } catch (err) {
     logger.error(err.message, { meta: err });
