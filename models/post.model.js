@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const postSchema = new Schema(
   {
-    title: { type: String, required: true },
+    title: { type: String, required: true, maxlength: 50, minlength: 1 },
     writer: { type: String, default: "Admin" },
     description: { type: String, maxlength: 100 },
     imageUrl: { type: String },
