@@ -9,7 +9,7 @@ const logger = winston.createLogger({
       level: "info"
     }),
     new winston.transports.MongoDB({
-      db: process.env.DB_URI,
+      db: process.env.TEST_DB_URI,
       options: { useUnifiedTopology: true, useNewUrlParser: true },
       metaKey: "meta",
       hostName: true,
