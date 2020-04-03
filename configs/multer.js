@@ -11,6 +11,6 @@ module.exports = multer({
     }
   },
   limits: {
-    fileSize: 1024 * 1024 * 50 //20MB limit
+    fileSize: 1024 * 1024 * 10 //10MB limit
   }
 });
