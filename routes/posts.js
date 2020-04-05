@@ -38,30 +38,6 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.put("/like/:id", async (req, res) => {
-  try {
-    let { factor } = req.body;
-    if (factor === "+" || factor === "-") {
-      const incrementOp =
-        factor === "+" ? { $inc: { likes: 1 } } : { $inc: { likes: -1 } };
-      let post = await Post.findByIdAndUpdate(req.params.id, incrementOp, {
-        new: true,
-        runValidators: true
-      });
-      if (!post) {
-        return res.status(404).json({ error: "Post not found!" });
-      } else {
-        return res.status(200).json(post);
-      }
-    } else {
-      return res.status(400).json({ error: "Invalid  like factor!" });
-    }
-  } catch (err) {
-    logger.error(err.message, { meta: err });
-    return res.status(500).json({ error: "Internal Server Error!" });
-  }
-});
-
 router.post("/", isAuthenticated, uploadMiddleware, async (req, res) => {
   try {
     let { error } = validatePost(req.body);
@@ -71,13 +47,13 @@ router.post("/", isAuthenticated, uploadMiddleware, async (req, res) => {
       let cloudinaryUploads = {};
       for (var file of req.files) {
         let upload = await cloudinary.v2.uploader.upload(file.path, {
-          public_id: `literary_club/${file.originalname}${Date.now()}`
+          public_id: `literary_club/${file.originalname}${Date.now()}`,
         });
         cloudinaryUploads[`${file.fieldname}`] = upload.secure_url;
       }
       let newPost = await new Post({
         ...req.body,
-        ...cloudinaryUploads
+        ...cloudinaryUploads,
       }).save();
       return res.status(200).json(newPost);
     }
@@ -92,7 +68,7 @@ router.put("/edit/:id", isAuthenticated, uploadMiddleware, async (req, res) => {
     let cloudinaryUploads = {};
     for (var file of req.files) {
       let upload = await cloudinary.v2.uploader.upload(file.path, {
-        public_id: `literary_club/${file.originalname}${Date.now()}`
+        public_id: `literary_club/${file.originalname}${Date.now()}`,
       });
       cloudinaryUploads[`${file.fieldname}`] = upload.secure_url;
     }
